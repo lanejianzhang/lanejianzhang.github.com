@@ -1,0 +1,37 @@
+        First we talk about the button.
+         Button or Submit
+         Solution 1:
+        disable_with => "Begin Service"
+        Rails can use :disable_with => "Begin Service". Example: = button_tag "Begin Service", root_path, :disable_with => "Begin Service"
+        This will not work when use RailsVersion Under(maybe 3.2) for image_submit_button. So we can fix it like this:
+         Solution 2:
+        $("#an_image_submit").attr("disabled", true)
+         Link
+        Add class = 'nodouble' to a link
+         Solution 1:
+        $(".nodouble").live "click", ->
+          $(this).click -> return false
+         Solution 2:
+        $("body").on "click", ".nodouble", (e) ->
+          $(this).attr "onclick", ""
+          $(this).on "click", (e) -> false
+         Solution 3:
+        For Ajax query:
+        CSS:
+        a.disabled {
+          opacity: 0.5;
+          pointer-events: none;#This line will not work in IE, So this solution is not suitable for IE. This solution's benifit is that it will change the CSS of the clicked link.
+          cursor: default
+        }
+        $(".nodouble").livequery "click", (e) ->
+          e.preventDefault()
+          a = $(this)
+          a.addClass('disabled')
+        Because Solution 3 can not work with IE, So we should do more work like this:
+         Solutions 4
+        $(".nodouble").livequery "click", (e) ->
+          e.preventDefault()
+          a = $(this)
+          return false if a.data("clicked")
+          a.data("clicked", true)
+          a.addClass('disabled')
